@@ -2,13 +2,14 @@ package main
 
 import (
 	"bytes"
-	"crypto/rand"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/adedejiosvaldo/terminal_speedtest/helpers"
 )
 
 // Server URL
@@ -58,7 +59,6 @@ func uploadFile(filePath string) {
 	writer.Close()
 	start := time.Now()
 
-	// Send POST request
 	req, err := http.NewRequest("POST", serverURL+"/upload", &requestBody)
 	if err != nil {
 		fmt.Println("Error creating request:", err)
@@ -80,7 +80,6 @@ func uploadFile(filePath string) {
 	fmt.Printf("Upload Response: %s\nUpload Time: %v\n", string(body), elapsed)
 }
 
-// Download a file
 func downloadFile(savePath string) {
 	start := time.Now()
 
@@ -119,29 +118,10 @@ func main() {
 	pingServer()
 
 	// Test file upload
-	GenerateLargeFile("test_upload.txt", 20)
+	helpers.GenerateLargeFile("test_upload.txt", 20)
 	testFile := "test_upload.txt"
 	uploadFile(testFile)
 
 	// Test file download
 	downloadFile("downloaded_testfile.dat")
-}
-
-func GenerateLargeFile(filePath string, sizeInMB int) error {
-	file, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	// Create a random large file
-	data := make([]byte, 1024*1024) // 1MB
-	rand.Read(data)
-	for i := 0; i < sizeInMB; i++ {
-		_, err := file.Write(data)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
