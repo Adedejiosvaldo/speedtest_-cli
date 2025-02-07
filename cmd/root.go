@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/adedejiosvaldo/terminal_speedtest/helpers"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +12,11 @@ var rootCmd = &cobra.Command{
 	Use:   "Speedup",
 	Short: "Speedup is a cli application for performing internet speed test",
 	Long:  "Speedup is a cli application for performing internet speed test",
-	Run:   func(cmd *cobra.Command, args []string) {},
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Print("running zero")
+
+		helpers.PingServer()
+	},
 }
 
 func Execute() {
